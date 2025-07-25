@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36310.24
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPITodoList", "WebAPITodoList\WebAPITodoList.csproj", "{8EBCB7E3-C40C-44E4-913D-CAB9F9545923}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8EBCB7E3-C40C-44E4-913D-CAB9F9545923}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EBCB7E3-C40C-44E4-913D-CAB9F9545923}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EBCB7E3-C40C-44E4-913D-CAB9F9545923}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EBCB7E3-C40C-44E4-913D-CAB9F9545923}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {43A36E5C-3AD9-4637-82E8-F15A526C4833}
+	EndGlobalSection
+EndGlobal

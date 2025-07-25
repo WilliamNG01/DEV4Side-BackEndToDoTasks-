@@ -1,0 +1,48 @@
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using WebAPITodoList.Models;
+using WebAPITodoList.Repositories.Interfaces;
+using WebAPITodoList.Services;
+
+namespace WebAPITodoList.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class AuthController : ControllerBase
+{
+    public readonly IUserRepository _userRepository;
+    private readonly TokenService _tokenService;
+    public AuthController(IUserRepository userRepository, TokenService tokenService)
+    {
+        _userRepository = userRepository;
+        _tokenService = tokenService;
+    }
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterUserDto registeruser)
+    {
+            var registered = await _userRepository.RegisterUserUserAsync(registeruser);
+
+            if (!registered)
+            {
+                return BadRequest("Registrazione fallita");
+            }
+            return Ok("Registrazione completata");
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginRequest login)
+    {
+        var loged = await _userRepository.LoginAsync(login);
+        if (loged>0)
+        {
+            User? user = await _userRepository.GetByUserIdAsync(loged);
+            List<Role> roles = user.UserRoles.Select(s => s.Role).ToList();
+            var token = _tokenService.GenerateToken(login.UserNameOrEmail, [.. roles.Select(x => x.RoleName)]);
+            return Ok(new { token });
+        }
+
+        return Unauthorized();
+    }
+}
