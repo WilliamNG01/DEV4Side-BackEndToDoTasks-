@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "apis1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/WebAPITo4doListapi/apis/WebAPITo4doList",
+      "type": "apis.azure"
+    },
+    "mssql1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('serviceConnectorResourceGroupName')]/providers/Microsoft.Web/sites/WebAPITodoList20250726153031/providers/Microsoft.ServiceLinker/linkers/ConnectionStringsTodoListContext_B4249641F9",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/dbsecureserverless/databases/db_serverlessT1",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:TodoListContext",
+      "dynamicId": null
+    }
+  }
+}
