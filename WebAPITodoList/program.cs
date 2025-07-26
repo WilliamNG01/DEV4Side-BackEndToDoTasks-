@@ -16,6 +16,20 @@ using WebAPITodoList.Services;
 using WebAPITodoList.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
+// Configurazione CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        //policy.WithOrigins("http://localhost:5173/") // Aggiungi qui gli URL dei client autorizzati
+        //       .AllowAnyMethod()
+        //       .AllowAnyHeader()
+        //       .AllowCredentials();
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 // Carica secrets.json solo in ambiente di sviluppo
 if (builder.Environment.IsDevelopment())
@@ -131,7 +145,7 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.UseCors("AllowSpecificOrigins");
+app.UseCors("AllowAll");
 
 
 app.UseRouting();

@@ -38,8 +38,11 @@ public class AuthController : ControllerBase
         if (loged>0)
         {
             User? user = await _userRepository.GetByUserIdAsync(loged);
-            List<Role> roles = user.UserRoles.Select(s => s.Role).ToList();
-            var token = _tokenService.GenerateToken(login.UserNameOrEmail, [.. roles.Select(x => x.RoleName)]);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+            var token = _tokenService.GenerateToken(user);
             return Ok(new { token });
         }
 

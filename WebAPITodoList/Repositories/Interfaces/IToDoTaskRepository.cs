@@ -1,13 +1,14 @@
-﻿using WebAPITodoList.Models;
+﻿using WebAPITodoList.DTOs;
+using WebAPITodoList.Models;
 
 namespace WebAPITodoList.Repositories.Interfaces;
 
 public interface IToDoTaskRepository
 {
-    Task<IEnumerable<ToDoTask>> GetTasksByListIdAsync(int listId);
-    Task<ToDoTask?> GetByIdAsync(int id);
-    Task AddAsync(ToDoTask task);
-    Task UpdateAsync(ToDoTask task);
-    Task DeleteAsync(ToDoTask task);
+    Task<IEnumerable<ToDoTaskDto>> GetTasksByListIdAsync(int listId, int userId);
+    Task<ToDoTaskDto?> GetByIdAsync(int id);
+    Task<int> AddAsync(ToDoTaskRequest task);
+    Task UpdateAsync(int taskId, ToDoTaskRequest task);
+    Task DeleteAsync(ToDoTaskDto task);
     Task SaveChangesAsync();
 }

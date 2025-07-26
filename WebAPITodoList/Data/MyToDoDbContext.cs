@@ -20,8 +20,6 @@ public partial class MyToDoDbContext : DbContext
 
     public virtual DbSet<ToDoList> ToDoLists { get; set; }
 
-    public virtual DbSet<ToDoListum> ToDoLista { get; set; }
-
     public virtual DbSet<ToDoTask> ToDoTasks { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -52,29 +50,11 @@ public partial class MyToDoDbContext : DbContext
                 .HasConstraintName("FK__Lists__UserId__2B0A656D");
         });
 
-        modelBuilder.Entity<ToDoListum>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__ToDoList__3214EC072058D16C");
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.EndedAt)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.Stato).HasMaxLength(20);
-            entity.Property(e => e.Title).HasMaxLength(100);
-
-            entity.HasOne(d => d.User).WithMany(p => p.ToDoLista)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK_ToDoList_UserId");
-        });
-
         modelBuilder.Entity<ToDoTask>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Tasks__3214EC07588F060B");
 
+            entity.Property(e => e.DueDate).HasColumnType("datetime");
             entity.Property(e => e.Status).HasMaxLength(20);
             entity.Property(e => e.Title).HasMaxLength(100);
 

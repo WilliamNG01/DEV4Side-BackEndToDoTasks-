@@ -23,8 +23,6 @@ public partial class User
 
     public DateTime CreatedAt { get; set; }
 
-    public virtual ICollection<ToDoListum> ToDoLista { get; set; } = new List<ToDoListum>();
-
     public virtual ICollection<ToDoList> ToDoLists { get; set; } = new List<ToDoList>();
 
     public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();

@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebAPITodoList.Models;
+namespace WebAPITodoList.DTOs;
 
-public partial class ToDoTask
+public partial class ToDoTaskDto: ToDoTaskRequest
 {
     public int Id { get; set; }
+
+}
+
+public partial class ToDoTaskRequest
+{
 
     public string Title { get; set; } = null!;
 
@@ -15,7 +20,6 @@ public partial class ToDoTask
 
     public string Status { get; set; } = null!;
 
-    public int ListId { get; set; }
+    public required int ListId { get; set; }
 
-    public virtual ToDoList List { get; set; } = null!;
 }

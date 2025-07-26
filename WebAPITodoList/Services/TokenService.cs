@@ -14,18 +14,20 @@ public class TokenService(IOptions<JwtSettings> jwtOptions)
 {
     private readonly JwtSettings _jwtSettings = jwtOptions.Value;
 
-    public string GenerateToken(string username, List<string> roles)
+    public string GenerateToken(User user)
     {
+        List<Role> roles = [.. user.UserRoles.Select(s => s.Role)];
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, username),
-            new Claim(JwtRegisteredClaimNames.Sub, username),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Name, user.Email),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
         // Supponiamo che user.Roles sia una lista di nomi di ruoli
         foreach (var role in roles)
         {
-            claims.Add(new Claim(ClaimTypes.Role, role));
+            claims.Add(new Claim(ClaimTypes.Role, role.RoleName));
         }
 
         // Create the security key and signing credentials

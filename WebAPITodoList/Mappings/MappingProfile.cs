@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using WebAPITodoList.DTOs;
 using WebAPITodoList.Models;
 
 namespace WebAPITodoList.Mappings;
@@ -11,6 +12,11 @@ public class MappingProfile: Profile
             .ForMember(dest => dest.Roles, opt => opt.MapFrom(src =>
                 src.UserRoles.Select(ur => ur.Role.RoleName).ToList()
             ));
-        CreateMap<ToDoList, ToDoDto>();
+        // Se vuoi mappare da Request a Dto (aggiungendo Id dopo)
+        CreateMap<ToDoTaskRequest, ToDoTaskDto>();
+
+        CreateMap<ToDoList, ToDoListResponse>();
+        CreateMap<ToDoTask, ToDoTaskDto>();
+        CreateMap<ToDoTaskDto, ToDoTask>();
     }
 }

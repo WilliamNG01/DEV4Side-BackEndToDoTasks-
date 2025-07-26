@@ -10,8 +10,18 @@ public class ToDoListRepository : IToDoListRepository
     private readonly MyToDoDbContext _context;
     public ToDoListRepository(MyToDoDbContext context) => _context = context;
 
-    public async Task<IEnumerable<ToDoList>> GetAllByUserIdAsync(int userId) =>
-        await _context.ToDoLists.Include(x => x.ToDoTasks).Where(x => x.UserId == userId).ToListAsync();
+    public async Task<IEnumerable<ToDoListResponse>> GetAllByUserIdAsync(int userId) =>
+        await _context.ToDoLists
+            .Include(x => x.ToDoTasks)
+            .Where(x => x.UserId == userId)
+            .Select(x => new ToDoListResponse
+            {
+                Id = x.Id,
+                Name = x.Name,
+                UserId = x.UserId,
+                ToDoTasks = x.ToDoTasks
+            })
+            .ToListAsync();
 
     public async Task<ToDoList?> GetByIdAsync(int id) =>
         await _context.ToDoLists.FindAsync(id);
