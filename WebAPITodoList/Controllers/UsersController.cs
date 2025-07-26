@@ -15,7 +15,7 @@ namespace WebAPITodoList.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class UsersController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -75,7 +75,7 @@ namespace WebAPITodoList.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateUser(User user)
+        public async Task<ActionResult> CreateUser([FromBody] User user)
         {
            await _userRepository.CreateUserAsync(user);
 

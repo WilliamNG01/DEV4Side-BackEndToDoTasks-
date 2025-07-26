@@ -7,7 +7,7 @@ using WebAPITodoList.Services;
 
 namespace WebAPITodoList.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 public class AuthController : ControllerBase
 {
