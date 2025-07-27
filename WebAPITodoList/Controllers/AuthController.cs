@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using WebAPITodoList.Models;
 using WebAPITodoList.Repositories.Interfaces;
@@ -34,6 +35,8 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest login)
     {
+        if(string.IsNullOrEmpty(login.UserNameOrEmail)) return Unauthorized();
+        if(string.IsNullOrEmpty(login.Password)) return Unauthorized();
         var loged = await _userRepository.LoginAsync(login);
         if (loged>0)
         {
