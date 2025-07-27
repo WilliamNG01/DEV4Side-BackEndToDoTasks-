@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using WebAPITodoList.Models;
 using WebAPITodoList.Repositories.Interfaces;
 
@@ -34,6 +35,23 @@ public class ToDoListsController : Controller
         };
         await _listRepo.AddAsync(list);
         await _listRepo.SaveChangesAsync();
+        return CreatedAtAction(nameof(GetLists), new { id = list.Id }, list);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateList(int id, [FromBody] ToDoListRequest dto)
+    {
+        if (id < 1) return BadRequest("Id non valido");
+        if (dto == null) return BadRequest("dto non valido");
+
+        var list = await _listRepo.GetByIdAsync(id);
+        if (list == null) return NotFound();
+        var listUpdate = new ToDoList
+        {
+            Name = dto.Name,
+            UserId = GetCurentUserId()
+        };
+        await _listRepo.UpdateAsync(id, list);
         return CreatedAtAction(nameof(GetLists), new { id = list.Id }, list);
     }
 
