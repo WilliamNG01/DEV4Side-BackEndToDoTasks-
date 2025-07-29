@@ -160,6 +160,8 @@ CREATE TABLE [dbo].[Users](
 	[BirthDate] [datetime] NULL,
 	[Salt] [varchar](50) NOT NULL,
 	[CreatedAt] [datetime] NOT NULL,
+
+ CONSTRAINT UQ_Users_Email UNIQUE (Email),
  CONSTRAINT [PK__tmp_ms_x__3214EC073AAB4F5D] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
