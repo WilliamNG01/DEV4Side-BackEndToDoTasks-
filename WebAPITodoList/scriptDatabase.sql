@@ -122,6 +122,8 @@ CREATE TABLE [dbo].[ToDoTasks](
 	[DueDate] [datetime] NULL,
 	[Status] [nvarchar](20) NOT NULL,
 	[ListId] [int] NOT NULL,
+
+ CONSTRAINT UQ_Users_Email UNIQUE (Email),
  CONSTRAINT [PK__Tasks__3214EC07588F060B] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
