@@ -46,11 +46,8 @@ public class ToDoListsController : Controller
 
         var list = await _listRepo.GetByIdAsync(id);
         if (list == null) return NotFound();
-        var listUpdate = new ToDoList
-        {
-            Name = dto.Name,
-            UserId = GetCurentUserId()
-        };
+        else list.Name = dto.Name;
+
         await _listRepo.UpdateAsync(id, list);
         return CreatedAtAction(nameof(GetLists), new { id = list.Id }, list);
     }

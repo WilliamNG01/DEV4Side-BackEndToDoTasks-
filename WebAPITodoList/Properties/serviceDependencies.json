@@ -7,6 +7,10 @@
       "type": "mssql",
       "connectionId": "ConnectionStrings:TodoListContext",
       "dynamicId": null
+    },
+    "apis2": {
+      "ignored": "true",
+      "type": "apis.azure"
     }
   }
 }
