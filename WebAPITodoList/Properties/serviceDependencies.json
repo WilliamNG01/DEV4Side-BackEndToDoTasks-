@@ -1,12 +1,16 @@
 {
   "dependencies": {
+    "apis1": {
+      "type": "apis"
+    },
     "mssql1": {
       "type": "mssql",
       "connectionId": "ConnectionStrings:TodoListContext",
       "dynamicId": null
     },
-    "apis1": {
-      "type": "apis"
+    "apis2": {
+      "ignored": "true",
+      "type": "apis.azure"
     }
   }
 }

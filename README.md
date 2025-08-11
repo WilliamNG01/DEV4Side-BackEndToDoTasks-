@@ -4,7 +4,7 @@
 > Mini-app stile **Trello / ToDo list** sviluppata in .NET per la gestione personale dei task divisi in categorie (liste).
 
 Questo progetto è stato realizzato come **esercizio di valutazione tecnica**, con l'obiettivo di dimostrare competenze nella progettazione e nello sviluppo di un backend completo: dalla creazione di API REST, alla gestione del database, fino alla strutturazione pulita del codice.
-> l'url online per testare: https://webapitodolist20250728153145.azurewebsites.net/swagger/v1/swagger.json
+> l'url online per testare: https://webapitodolist20250805111326-fxdcgvctgqctb6cg.canadacentral-01.azurewebsites.net/swagger/v1/swagger.json
 
 ---
 
