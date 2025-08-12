@@ -1,18 +1,23 @@
 name: dotnet-build
 on: 
+  workflow_dispatch:
   push:
-   branches:
-      - master
+      branches:
+        - master
+env:
+    DOTNET_VERSION: '8.0.x'
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repo code
         uses: actions/checkout@v4        
-      - name: Setip .NET
-        uses: actions/checkout@v4
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: Restore
         run: dotnet restore
       - name: build
