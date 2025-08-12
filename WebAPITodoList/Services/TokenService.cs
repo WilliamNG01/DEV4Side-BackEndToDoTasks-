@@ -1,19 +1,29 @@
 ﻿
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using NuGet.Packaging;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using WebAPITodoList.Models;
 using WebAPITodoList.Settings;
+
 namespace WebAPITodoList.Services;
 
-public class TokenService(IOptions<JwtSettings> jwtOptions)
+public interface ITokenService
 {
-    private readonly JwtSettings _jwtSettings = jwtOptions.Value;
-
+    string GenerateToken(User user);
+    ClaimsPrincipal? ValidateToken(string token);
+}
+public class TokenService: ITokenService
+{
+    private readonly JwtSettings _jwtSettings;
+    private readonly byte[] _key;
+    public TokenService(IOptions<JwtSettings> jwtOptions)
+    {
+        _jwtSettings = jwtOptions.Value;
+        _key = Encoding.UTF8.GetBytes(_jwtSettings.Key);
+    }
     public string GenerateToken(User user)
     {
         List<Role> roles = [.. user.UserRoles.Select(s => s.Role)];
@@ -31,7 +41,7 @@ public class TokenService(IOptions<JwtSettings> jwtOptions)
         }
 
         // Create the security key and signing credentials
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+        var key = new SymmetricSecurityKey(_key);
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
@@ -43,5 +53,33 @@ public class TokenService(IOptions<JwtSettings> jwtOptions)
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+    public ClaimsPrincipal? ValidateToken(string token)
+    {
+        if (string.IsNullOrEmpty(token))
+            return null;
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        try
+        {
+            var parameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = _jwtSettings.Issuer,
+                ValidateAudience = true,
+                ValidAudience = _jwtSettings.Audience,
+                ValidateLifetime = true,
+                IssuerSigningKey = new SymmetricSecurityKey(_key),
+                ValidateIssuerSigningKey = true,
+                ClockSkew = TimeSpan.Zero
+            };
+
+            var principal = tokenHandler.ValidateToken(token, parameters, out _);
+            return principal;
+        }
+        catch
+        {
+            return null; // token invalide
+        }
     }
 }

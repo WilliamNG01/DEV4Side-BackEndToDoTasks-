@@ -13,8 +13,8 @@ namespace WebAPITodoList.Controllers;
 public class AuthController : ControllerBase
 {
     public readonly IUserRepository _userRepository;
-    private readonly TokenService _tokenService;
-    public AuthController(IUserRepository userRepository, TokenService tokenService)
+    private readonly ITokenService _tokenService;
+    public AuthController(IUserRepository userRepository, ITokenService tokenService)
     {
         _userRepository = userRepository;
         _tokenService = tokenService;
