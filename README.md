@@ -3,8 +3,8 @@
 
 > Mini-app stile **Trello / ToDo list** sviluppata in .NET per la gestione personale dei task divisi in categorie (liste).
 
-Questo progetto è stato realizzato come **esercizio di valutazione tecnica**, con l'obiettivo di dimostrare competenze nella progettazione e nello sviluppo di un backend completo: dalla creazione di API REST, alla gestione del database, fino alla strutturazione pulita del codice.
-> l'url online per testare: https://webapitodolist20250805111326-fxdcgvctgqctb6cg.canadacentral-01.azurewebsites.net/swagger/v1/swagger.json
+Questo progetto è stato realizzato come **esercizio di valutazione tecnica**, con l'obiettivo di dimostrare competenze nella progettazione e nello sviluppo di un backend completo: dalla creazione di API REST, alla gestione del database, fino alla strutturazione pulita del codice.  
+> URL per testare: [Swagger API](https://webapitodolist20250805111326-fxdcgvctgqctb6cg.canadacentral-01.azurewebsites.net/swagger/v1/swagger.json)
 
 ---
 
@@ -29,6 +29,10 @@ Ogni **task** include:
 - **SQL Server (hostato in Azure)**
 - **AutoMapper**
 - **JWT Authentication**
+- **xUnit** per test automatici
+- **Middleware personalizzati**:
+  - `JwtMiddleware` → gestione e validazione dei token JWT
+  - `RateLimitingMiddleware` → protezione anti-DDoS e limitazione delle richieste per evitare sovraccarico della base dati Azure
 - Architettura: `Controller → Service → Repository`
 
 ---
@@ -36,33 +40,67 @@ Ogni **task** include:
 ## 📂 Architettura del progetto
 
 ```
-├── Controllers
-│   ├── TasksController.cs
-│   └── ListsController.cs
+├───Tests
+│   └───TestToDoList
+│       │   AuthTest.cs
+│       │   RateLimitingMiddlewareTests.cs
+│       │   TestToDoList.csproj
 │
-├── DTOs
-│   ├── ToDoTaskDto.cs
-│   └── ToDoTaskRequest.cs
-│
-├── Models
-│   ├── ToDoTask.cs
-│   └── TaskList.cs
-│
-├── Repositories
-│   ├── ITaskRepository.cs
-│   └── ITaskListRepository.cs
-│
-├── Services
-│   ├── TaskService.cs
-│   └── TaskListService.cs
-│
-├── Data
-│   └── ApplicationDbContext.cs
-│
-├── Mappings
-│   └── AutoMapperProfile.cs
+└───WebAPITodoList
+    │   appsettings.json
+    │   program.cs
+    │   (scriptDatabase.sql)
+    ├───Controllers
+    │       AuthController.cs
+    │       TasksController.cs
+    │       ToDoListController.cs
+    │       UsersController.cs
+    │
+    ├───Data
+    │       MyToDoDbContext.cs
+    │
+    ├───DTOs
+    │       LoginRequest.cs
+    │       RegisterUserDto.cs
+    │       TaskStatus.cs
+    │       ToDoListRequest.cs
+    │       ToDoTaskDto.cs
+    │       UserDto.cs
+    │
+    ├───Mappings
+    │       MappingProfile.cs
+    │
+    ├───Middlewares
+    │       ErrorHandlingMiddleware.cs
+    │       JwtMiddleware.cs
+    │       RateLimitingMiddleware.cs
+    │
+    ├───Migrations
+    │       MyToDoDbContextModelSnapshot.cs
+    │
+    ├───Models
+    │       Role.cs
+    │       ToDoList.cs
+    │       ToDoTask.cs
+    │       User.cs
+    │       UserRole.cs
+    │
+    ├───Repositories
+    │   │   ToDoListRepository.cs
+    │   │   ToDoTaskRepository.cs
+    │   │   UserRepository.cs
+    │   │
+    │   └───Interfaces
+    │           IToDoListRepository.cs
+    │           IToDoTaskRepository.cs
+    │           IUserRepository.cs
+    │
+    ├───Services
+    │       TokenService.cs
+    │
+    └───Settings
+            JwtSettings.cs
 ```
-
 ---
 
 ## 🔐 Autenticazione, Autorizzazione e Sicurezza
@@ -71,6 +109,32 @@ Ogni **task** include:
 - Gestione dei **ruoli** (es. Admin, User)
 - CORS configurato per dominio in Azure
 - Controllo degli accessi a livello di endpoint
+
+## 🔐 Sicurezza applicativa
+
+### JwtMiddleware
+Middleware personalizzato per:
+- Intercettare tutte le richieste entranti
+- Estrarre il token JWT dall’header `Authorization`
+- Validare firma, scadenza e integrità
+- Impostare l’utente autenticato nel `HttpContext`
+
+Questo garantisce che **solo gli utenti autenticati** possano accedere agli endpoint protetti.
+
+---
+
+### RateLimitingMiddleware (Protezione DDoS)
+Middleware per:
+- Limitare il numero di richieste per IP in una finestra temporale
+- Prevenire abusi e flood di richieste
+- Evitare saturazione della mia **base dati in Azure** e consumo eccessivo delle risorse
+
+Esempio di configurazione:
+```json
+"RateLimitSettings": {
+  "Limit": 5,
+  "Period": 10
+}
 
 ---
 
@@ -168,15 +232,42 @@ dotnet run
 ```
 
 ---
+## 🧪 Test automatici (xUnit)
+I test sono stati implementati per garantire il corretto funzionamento delle funzionalità principali e la sicurezza del sistema.
 
+  ## Tipologie di test inclusi:
+    - AuthTest → verifica la registrazione e login utente
+    
+    - TokenServiceTests → verifica:
+    
+        - Generazione corretta di token JWT
+        
+        - Validazione di token validi e rifiuto di token invalidi
+    
+    - JwtMiddlewareTests → verifica:
+    
+        - Richieste con token valido → HttpContext.User popolato
+        
+        - Richieste con token invalido → accesso negato
+    
+    - RateLimitingMiddlewareTests → verifica:
+    
+        - Richieste entro il limite → 200 OK
+        
+        - Richieste oltre il limite → 429 Too Many Requests
+---
+## ▶️ Avviare del test
+```bash
+dotnet test
+```
+---
 ## 🚧 Possibili miglioramenti futuri
 
 - Logging avanzato (Serilog)
-- Validazione con FluentValidation
 - Interfaccia frontend (es. Blazor, Angular o React)
 - Dashboard amministrativa per gestione utenti e ruoli
 - Deployment automatico (CI/CD) su Azure
-
+- Rate limiting dinamico basato su ruoli
 ---
 
 ## 📄 Licenza
