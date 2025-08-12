@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
       branches:
-        - master
+        - main
 env:
     DOTNET_VERSION: '8.0.x'
 
