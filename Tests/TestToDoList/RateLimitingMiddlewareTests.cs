@@ -23,7 +23,7 @@ public class RateLimitingMiddlewareTests
                 // Injection dei parametri di test di rate limiting
                 services.Configure<RateLimitSettings>(opts =>
                 {
-                    //opts.LIMIT = limit;
+                    opts.LIMIT = limit;
                     opts.PERIOD = windowSeconds;
                 });
             })
