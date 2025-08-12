@@ -135,10 +135,10 @@ Esempio di configurazione:
   "Limit": 5,
   "Period": 10
 }
-
+```
 ---
 
-## 📌 API Endpoint
+### 📌 API Endpoint
 
 ### ✅ User
 - `POST /auth/register` → Registra nuovo utente
@@ -230,7 +230,6 @@ Microsoft.EntityFrameworkCore.SqlServer \
 ```bash
 dotnet run
 ```
-
 ---
 ## 🧪 Test automatici (xUnit)
 I test sono stati implementati per garantire il corretto funzionamento delle funzionalità principali e la sicurezza del sistema.
