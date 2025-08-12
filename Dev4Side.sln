@@ -5,6 +5,10 @@ VisualStudioVersion = 17.14.36310.24
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPITodoList", "WebAPITodoList\WebAPITodoList.csproj", "{8EBCB7E3-C40C-44E4-913D-CAB9F9545923}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestToDoList", "Tests\TestToDoList\TestToDoList.csproj", "{6D90A6D7-04AC-4FE5-A774-D2712D7B99FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +19,16 @@ Global
 		{8EBCB7E3-C40C-44E4-913D-CAB9F9545923}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EBCB7E3-C40C-44E4-913D-CAB9F9545923}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EBCB7E3-C40C-44E4-913D-CAB9F9545923}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D90A6D7-04AC-4FE5-A774-D2712D7B99FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D90A6D7-04AC-4FE5-A774-D2712D7B99FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D90A6D7-04AC-4FE5-A774-D2712D7B99FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D90A6D7-04AC-4FE5-A774-D2712D7B99FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6D90A6D7-04AC-4FE5-A774-D2712D7B99FA} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {43A36E5C-3AD9-4637-82E8-F15A526C4833}

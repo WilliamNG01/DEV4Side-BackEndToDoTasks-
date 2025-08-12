@@ -4,12 +4,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using ToDoListApi.Middlewares;
 using WebAPITodoList.Data;
 using WebAPITodoList.Mappings;
+using WebAPITodoList.Middlewares;
 using WebAPITodoList.Repositories;
 using WebAPITodoList.Repositories.Interfaces;
 using WebAPITodoList.Services;
@@ -112,8 +114,9 @@ builder.Services.Configure<JwtSettings>(
     builder.Configuration.GetSection("JwtSettings"));
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 
+
 //Registra il servizi di token Jwt
-builder.Services.AddSingleton<TokenService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 //Aggiungi autenticazione Jwt
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -135,9 +138,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+
+//limit DDOS
+builder.Services.Configure<RateLimitSettings>(
+    builder.Configuration.GetSection("RateLimitSettings"));
+
+// Aggiungi il servizio di cahce in memoria
+builder.Services.AddMemoryCache();
+
 var app = builder.Build();
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseMiddleware<RateLimitingMiddleware>();
+app.UseMiddleware<JwtMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI();
